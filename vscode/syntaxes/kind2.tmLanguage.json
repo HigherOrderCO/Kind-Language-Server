@@ -59,6 +59,31 @@
         }
       ]
     },
+    "type-expr": {
+      "patterns": [
+        {
+          "include": "#if-expr"
+        },
+        {
+          "include": "#match-expr"
+        },
+        {
+          "include": "#type-constructor"
+        },
+        {
+          "include": "#name"
+        },
+        {
+          "include": "#decimal-literal"
+        },
+        {
+          "include": "#symbols"
+        },
+        {
+          "include": "#strings"
+        }
+      ]
+    },
     "expr": {
       "patterns": [
         {
@@ -189,6 +214,10 @@
       "match": "[A-Z_][a-z_/.0-9]*",
       "name": "entity.name.function"
     },
+    "type-constructor": {
+      "match": "[A-Z_][a-z_/.0-9]*",
+      "name": "entity.name.type"
+    },
     "name": {
       "match": "[a-z_^./][a-z_^./0-9]*",
       "name": "variable.name"
@@ -248,13 +277,15 @@
       }
     },
     "function": {
-      "match": "(\\b[^\\s]+\\b)\\s*(\\(.+\\))?\\s*(:)(.+)",
+      "match": "(\\b[^\\s]+\\b)\\s*((?:\\<\\b[^\\s]+\\s*\\>\\s*)+)?\\s*(\\(.+\\))?\\s*:(.+)",
       "captures": {
         "1": {
           "name": "entity.name.function"
         },
         "2": {
-          "name": "entity.name.type",
+          "name": "keyword.control"
+        },
+        "3": {
           "patterns": [
             {
               "match": "(\\b[^:\\s]+\\b\\s*):",
@@ -262,15 +293,22 @@
                 "1": {
                   "name": "variable.parameter"
                 }
-              },
-              "name": "keyword.control"
+              }
+            },
+            {
+              "include": "#type-expr"
             }
           ]
         },
-        "3": {
-          "name": "keyword.control"
-        },
         "4": {
+          "name": "entity.name.type",
+          "patterns": [
+            {
+              "include": "#type-expr"
+            }
+          ]
+        },
+        "5": {
           "name": "entity.name.type"
         }
       },
