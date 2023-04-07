@@ -36,6 +36,9 @@
       "include": "#stmt"
     },
     {
+      "include": "#if-expr"
+    },
+    {
       "include": "#expr"
     }
   ],
@@ -49,12 +52,18 @@
           "include": "#do-stmt"
         },
         {
+          "include": "#let-stmt"
+        },
+        {
           "include": "#return-stmt"
         }
       ]
     },
     "expr": {
       "patterns": [
+        {
+          "include": "#if-expr"
+        },
         {
           "include": "#match-expr"
         },
@@ -63,8 +72,126 @@
         },
         {
           "include": "#name"
+        },
+        {
+          "include": "#decimal-literal"
+        },
+        {
+          "include": "#symbols"
+        },
+        {
+          "include": "#strings"
         }
       ]
+    },
+
+    "return-stmt": {
+      "match": "\\b(return)\\s*(.+)",
+      "captures": {
+        "1": {
+          "name": "keyword.control"
+        },
+        "2": {
+          "patterns": [{ "include": "#expr" }]
+        }
+      }
+    },
+    "let-stmt": {
+      "match": "\\b(let)\\s*([^\\s]+)\\s*=\\s*([^\\s]+)\\s*",
+      "captures": {
+        "1": {
+          "name": "keyword.control"
+        },
+        "2": {
+          "name": "variable.name"
+        },
+        "3": {
+          "patterns": [{ "include": "#expr" }]
+        }
+      }
+    },
+    "ask-stmt": {
+      "match": "\\b(ask)\\s*([^\\s]+)\\s*=\\s*([^\\s]+)\\s*",
+      "captures": {
+        "1": {
+          "name": "keyword.control"
+        },
+        "2": {
+          "name": "variable.name"
+        },
+        "3": {
+          "patterns": [{ "include": "#expr" }]
+        }
+      }
+    },
+    "do-stmt": {
+      "name": "keyword.control",
+      "match": "\\b(do)\\s*([^\\s]+)\\s*{",
+      "captures": {
+        "1": {
+          "name": "keyword.control"
+        },
+        "2": {
+          "name": "entity.name.type"
+        }
+      }
+    },
+
+    "match-expr": {
+      "match": "\\b(match)\\s*(\\b[^\\s]+)\\s*(\\b[^\\s]+)\\s*(=(?:.+))?{",
+      "captures": {
+        "1": {
+          "name": "keyword.control"
+        },
+        "2": {
+          "name": "entity.name.type"
+        },
+        "3": {
+          "name": "variable.name"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#expr"
+            }
+          ]
+        }
+      }
+    },
+    "if-expr": {
+      "begin": "\\b(if)\\s*(.+)\\s*{",
+      "while": "\\s*\n\\s*(.+)",
+      "end": "\\s*}\\s*\\b(else)\\s*{\\s*",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#expr"
+            }
+          ]
+        }
+      },
+      "whileCaptures": {
+        "1": {
+          "patterns": [{ "include": "#stmt" }, { "include": "#expr" }]
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "keyword.control"
+        }
+      }
+    },
+    "constructor": {
+      "match": "[A-Z_][a-z_/.0-9]*",
+      "name": "entity.name.function"
+    },
+    "name": {
+      "match": "[a-z_^./][a-z_^./0-9]*",
+      "name": "variable.name"
     },
 
     "top-level": {
@@ -119,66 +246,6 @@
           "patterns": [{ "include": "#stmt" }, { "include": "#expr" }]
         }
       }
-    },
-    "return-stmt": {
-      "match": "\\b(return)\\s*(.+)",
-      "captures": {
-        "1": {
-          "name": "keyword.control"
-        }
-      }
-    },
-    "ask-stmt": {
-      "match": "\\b(ask)\\s*([^\\s]+)\\s*=\\s*([^\\s]+)\\s*",
-      "captures": {
-        "1": {
-          "name": "keyword.control"
-        },
-        "2": {
-          "name": "variable.name"
-        }
-      }
-    },
-    "do-stmt": {
-      "name": "keyword.control",
-      "match": "\\b(do)\\s*([^\\s]+)\\s*{",
-      "captures": {
-        "1": {
-          "name": "keyword.control"
-        },
-        "2": {
-          "name": "entity.name.type"
-        }
-      }
-    },
-    "match-expr": {
-      "match": "\\b(match)\\s*(\\b[^\\s]+)\\s*(\\b[^\\s]+)\\s*(=(?:.+))?{",
-      "captures": {
-        "1": {
-          "name": "keyword.control"
-        },
-        "2": {
-          "name": "entity.name.type"
-        },
-        "3": {
-          "name": "variable.name"
-        },
-        "4": {
-          "patterns": [
-            {
-              "include": "#expr"
-            }
-          ]
-        }
-      }
-    },
-    "constructor": {
-      "match": "[A-Z_][a-z_/.0-9]+",
-      "name": "entity.name.function"
-    },
-    "name": {
-      "match": "[a-z_^./][a-z_^./0-9]+",
-      "name": "variable.name"
     },
     "function": {
       "match": "(\\b[^\\s]+\\b)\\s*(\\(.+\\))?\\s*(:)(.+)",
@@ -240,6 +307,7 @@
       },
       "end": "\n"
     },
+
     "symbols": {
       "patterns": [
         {
