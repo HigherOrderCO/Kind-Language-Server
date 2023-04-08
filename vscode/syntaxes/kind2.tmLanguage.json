@@ -46,6 +46,9 @@
     "stmt": {
       "patterns": [
         {
+          "include": "#open-stmt"
+        },
+        {
           "include": "#ask-stmt"
         },
         {
@@ -122,6 +125,20 @@
       ]
     },
 
+    "open-stmt": {
+      "match": "\\b(open)\\s*(\\b[^\\s]+)\\s*(\\b[^\\s]+)\n",
+      "captures": {
+        "1": {
+          "name": "keyword.control"
+        },
+        "2": {
+          "name": "entity.name.type"
+        },
+        "3": {
+          "name": "variable.name"
+        }
+      }
+    },
     "return-stmt": {
       "match": "\\b(return)\\s*(.+)",
       "captures": {
