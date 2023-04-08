@@ -1,0 +1,20 @@
+{
+  parserClass="dev.aripiprazole.kind.idea.parser.KindParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Kind"
+  psiImplClassSuffix="Impl"
+  psiPackage="dev.aripiprazole.kind.idea.psi"
+  psiImplPackage="dev.aripiprazole.kind.idea.psi.impl"
+
+  elementTypeHolderClass="dev.aripiprazole.kind.idea.KindTypes"
+  elementTypeClass="dev.aripiprazole.kind.idea.KindElementType"
+  tokenTypeClass="dev.aripiprazole.kind.idea.KindTokenType"
+}
+
+simpleFile ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY
