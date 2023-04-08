@@ -18,9 +18,14 @@
           "kind2"
         ],
         "extensions": [
-          "kind2"
+          "kind2",
+          "kind"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/kind-light.svg",
+          "dark": "./icons/kind-dark.svg"
+        }
       }
     ],
     "grammars": [
