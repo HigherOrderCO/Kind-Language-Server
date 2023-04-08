@@ -9,6 +9,11 @@
   "categories": [
     "Programming Languages"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aripiprazole/eszopiclone"
+  },
+  "publisher": "kind-language-server",
   "contributes": {
     "languages": [
       {
