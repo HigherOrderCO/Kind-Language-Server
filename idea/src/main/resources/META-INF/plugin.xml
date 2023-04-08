@@ -35,5 +35,8 @@
     <lang.parserDefinition
       language="Kind"
       implementationClass="dev.aripiprazole.kind.idea.KindParserDefinition"/>
+    <lang.syntaxHighlighterFactory
+      language="Kind"
+      implementationClass="dev.aripiprazole.kind.idea.KindHighlighterFactory"/>
   </extensions>
 </idea-plugin>
