@@ -1,5 +1,6 @@
 package dev.aripiprazole.kind.idea;
 
+import com.intellij.psi.TokenType;
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 
@@ -9,34 +10,38 @@ import static dev.aripiprazole.kind.idea.KindTypes.*;
 
 %%
 
-%{
-  public _KindLexer() {
-    this((java.io.Reader)null);
-  }
-%}
-
-%public
 %class _KindLexer
 %implements FlexLexer
+%unicode
 %function advance
 %type IElementType
-%unicode
+%eof{  return;
+%eof}
 
-EOL=\R
-WHITE_SPACE=\s+
+CRLF=\R
+WHITE_SPACE=[\ \n\t\f]
+FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
+VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
+END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
+SEPARATOR=[:=]
+KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 
+%state WAITING_VALUE
 
 %%
-<YYINITIAL> {
-  {WHITE_SPACE}      { return WHITE_SPACE; }
 
-  "COMMENT"          { return COMMENT; }
-  "CRLF"             { return CRLF; }
-  "KEY"              { return KEY; }
-  "SEPARATOR"        { return SEPARATOR; }
-  "VALUE"            { return VALUE; }
+<YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return KindTypes.COMMENT; }
 
+<YYINITIAL> {KEY_CHARACTER}+                                { yybegin(YYINITIAL); return KindTypes.KEY; }
 
-}
+<YYINITIAL> {SEPARATOR}                                     { yybegin(WAITING_VALUE); return KindTypes.SEPARATOR; }
 
-[^] { return BAD_CHARACTER; }
+<WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+
+<WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
+
+<WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*   { yybegin(YYINITIAL); return KindTypes.VALUE; }
+
+({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+
+[^]                                                         { return TokenType.BAD_CHARACTER; }

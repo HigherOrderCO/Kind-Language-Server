@@ -10,7 +10,6 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
-import dev.aripiprazole.kind.idea.lexer.KindLexerAdapter
 import dev.aripiprazole.kind.idea.parser.KindParser
 
 class KindParserDefinition : ParserDefinition {
