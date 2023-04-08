@@ -333,7 +333,7 @@
           "include": "#doc-comments"
         },
         {
-          "include": "#function"
+          "include": "#type-function"
         }
       ]
     },
@@ -372,6 +372,44 @@
           "patterns": [{ "include": "#stmt" }, { "include": "#expr" }]
         }
       }
+    },
+    "type-function": {
+      "match": "(\\b[^\\s]+\\b)\\s*((<\\b[^\\s]+(\\:\\s*\\b[^\\s]+)?>\\s*)*)?\\s*(\\(.+\\))?\\s*(:(.+))?",
+      "captures": {
+        "1": {
+          "name": "entity.name.function"
+        },
+        "2": {
+          "name": "keyword.control"
+        },
+        "5": {
+          "patterns": [
+            {
+              "match": "(\\b[^:\\s]+\\b\\s*):",
+              "captures": {
+                "1": {
+                  "name": "variable.parameter"
+                }
+              }
+            },
+            {
+              "include": "#type-expr"
+            }
+          ]
+        },
+        "6": {
+          "name": "entity.name.type",
+          "patterns": [
+            {
+              "include": "#type-expr"
+            }
+          ]
+        },
+        "8": {
+          "name": "entity.name.type"
+        }
+      },
+      "name": "entity.name.function"
     },
     "function": {
       "match": "(\\b[^\\s]+\\b)\\s*((<\\b[^\\s]+(\\:\\s*\\b[^\\s]+)?>\\s*)*)?\\s*(\\(.+\\))?\\s*:(.+)",
