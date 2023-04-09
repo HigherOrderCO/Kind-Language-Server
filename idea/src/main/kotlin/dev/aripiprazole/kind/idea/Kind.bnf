@@ -100,7 +100,7 @@ return_stmt ::= return_keyword expr eol;
 
 type_expr ::= expr;
 
-expr ::= DOC_STRING | COMMENT | if_expr | do_expr | lam_typed_expr | lam_expr;
+expr ::= DOC_STRING | COMMENT | match_expr | if_expr | do_expr | lam_typed_expr | lam_expr;
 
 lam_typed_expr ::= (LEFT_PAREN any_name COLON type_expr RIGHT_PAREN) ((ARROW | FAT_ARROW) expr)?;
 
@@ -108,11 +108,21 @@ lam_expr ::= call (binary expr)?;
 
 if_expr ::= if_keyword expr then_expr else_expr?;
 
-then_expr ::= LEFT_BRACE eol statement RIGHT_BRACE;
+block ::= LEFT_BRACE statement* RIGHT_BRACE;
 
-else_expr ::= else_keyword LEFT_BRACE eol statement RIGHT_BRACE;
+then_expr ::= block;
 
-do_expr ::= do_keyword type_name? LEFT_BRACE statement* RIGHT_BRACE;
+else_expr ::= else_keyword block;
+
+do_expr ::= do_keyword type_name? block;
+
+match_pattern ::= any_name | deconstruct_pattern;
+
+match_case ::= match_pattern FAT_ARROW (block | expr);
+
+scrutinee ::= any_name EQUAL expr | expr;
+
+match_expr ::= match_keyword type_name? scrutinee LEFT_BRACE match_case* RIGHT_BRACE;
 
 identifier ::= ATOM {
   methods="getIdentifier"
