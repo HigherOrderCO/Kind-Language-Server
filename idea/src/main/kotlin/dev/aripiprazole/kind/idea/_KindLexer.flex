@@ -49,14 +49,8 @@ COMMENT="//"[^\r\n]*\n
 
 <YYINITIAL> {DOC_STRING}                                    { return KindTypes.DOC_STRING; }
 <YYINITIAL> {COMMENT}                                       { return KindTypes.COMMENT; }
-<YYINITIAL> "do"                                            { return KindTypes.DO; }
-<YYINITIAL> "as"                                            { return KindTypes.AS; }
-<YYINITIAL> "let"                                           { return KindTypes.LET; }
-<YYINITIAL> "ask"                                           { return KindTypes.ASK; }
-<YYINITIAL> "use"                                           { return KindTypes.USE; }
-<YYINITIAL> "type"                                          { return KindTypes.TYPE; }
-<YYINITIAL> "record"                                        { return KindTypes.RECORD; }
 <YYINITIAL> "->"                                            { return KindTypes.ARROW; }
+<YYINITIAL> "=>"                                            { return KindTypes.FAT_ARROW; }
 <YYINITIAL> "~"                                             { return KindTypes.TILDE; }
 <YYINITIAL> "."                                             { return KindTypes.DOT; }
 <YYINITIAL> "<"                                             { return KindTypes.LT; }

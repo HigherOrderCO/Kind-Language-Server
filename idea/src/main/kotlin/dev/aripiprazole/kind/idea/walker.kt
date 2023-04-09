@@ -2,8 +2,10 @@ package dev.aripiprazole.kind.idea
 
 import com.intellij.psi.PsiElement
 import dev.aripiprazole.kind.idea.psi.KindAttributeName
+import dev.aripiprazole.kind.idea.psi.KindRuleBlockValue
 import dev.aripiprazole.kind.idea.psi.KindRuleName
 import dev.aripiprazole.kind.idea.psi.KindRulePattern
+import dev.aripiprazole.kind.idea.psi.KindRuleValue
 import dev.aripiprazole.kind.idea.psi.KindTypeExpr
 import dev.aripiprazole.kind.idea.psi.KindTypeName
 
@@ -18,6 +20,13 @@ fun PsiElement.isInsideRuleName(): Boolean {
   if (this is KindRuleName) return true
 
   return parent?.isInsideRuleName() ?: false
+}
+
+fun PsiElement.isInsideRuleValue(): Boolean {
+  if (this is KindRuleBlockValue) return true
+  if (this is KindRuleValue) return true
+
+  return parent?.isInsideRuleValue() ?: false
 }
 
 fun PsiElement.isInsideRulePattern(): Boolean {

@@ -28,14 +28,14 @@ class KindHighlighter : SyntaxHighlighterBase() {
       KindTypes.NAT_LITERAL,
       -> arrayOf(NUMBER_KEYS)
 
-      KindTypes.DO,
-      KindTypes.LET,
-      KindTypes.ASK,
-      KindTypes.AS,
-      KindTypes.USE,
-      KindTypes.TYPE,
-      KindTypes.RECORD,
-      -> arrayOf(KEYWORD_KEYS)
+//      KindTypes.DO,
+//      KindTypes.LET,
+//      KindTypes.ASK,
+//      KindTypes.AS,
+//      KindTypes.USE,
+//      KindTypes.TYPE,
+//      KindTypes.RECORD,
+//      -> arrayOf(KEYWORD_KEYS)
 
       KindTypes.HASHTAG -> arrayOf(ATTRIBUTE_KEYS)
 
