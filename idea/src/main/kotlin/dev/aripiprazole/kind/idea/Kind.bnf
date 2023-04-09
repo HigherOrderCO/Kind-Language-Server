@@ -20,7 +20,7 @@ eol ::= (SEMI | CRLF)*;
 
 declaration ::= SEMI | CRLF | DOC_STRING | COMMENT | attribute eol | type_declaration eol | use_declaration eol | rule_declaration eol | val_declaration eol;
 
-attribute ::= HASHTAG attribute_name (attribute_argument | attribute_assign);
+attribute ::= HASHTAG attribute_name (attribute_argument | attribute_assign)?;
 
 attribute_name ::= any_name;
 
@@ -76,7 +76,7 @@ rule_pattern ::= STRING_LITERAL
 
 rule_declaration ::= any_name rule_pattern* (rule_value | rule_block_value);
 
-rule_block_value ::= LEFT_BRACE (statement SEMI)* RIGHT_BRACE;
+rule_block_value ::= LEFT_BRACE (statement eol)* RIGHT_BRACE;
 
 rule_value ::= EQUAL expr;
 
@@ -90,7 +90,9 @@ return_stmt ::= return_keyword expr;
 
 type_expr ::= expr;
 
-expr ::= do_expr | lam_expr;
+expr ::= DOC_STRING | COMMENT | do_expr | lam_typed_expr | lam_expr;
+
+lam_typed_expr ::= (LEFT_PAREN any_name COLON type_expr RIGHT_PAREN) ((ARROW | FAT_ARROW) expr)?;
 
 lam_expr ::= call ((ARROW | FAT_ARROW) expr)?;
 
