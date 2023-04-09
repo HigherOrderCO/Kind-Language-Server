@@ -100,11 +100,17 @@ return_stmt ::= return_keyword expr eol;
 
 type_expr ::= expr;
 
-expr ::= DOC_STRING | COMMENT | do_expr | lam_typed_expr | lam_expr;
+expr ::= DOC_STRING | COMMENT | if_expr | do_expr | lam_typed_expr | lam_expr;
 
 lam_typed_expr ::= (LEFT_PAREN any_name COLON type_expr RIGHT_PAREN) ((ARROW | FAT_ARROW) expr)?;
 
 lam_expr ::= call (binary expr)?;
+
+if_expr ::= if_keyword expr then_expr else_expr?;
+
+then_expr ::= LEFT_BRACE eol statement RIGHT_BRACE;
+
+else_expr ::= else_keyword LEFT_BRACE eol statement RIGHT_BRACE;
 
 do_expr ::= do_keyword type_name? LEFT_BRACE statement* RIGHT_BRACE;
 
