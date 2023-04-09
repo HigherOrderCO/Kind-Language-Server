@@ -14,7 +14,7 @@ import dev.aripiprazole.kind.idea.parser.KindParser
 
 class KindParserDefinition : ParserDefinition {
   override fun getFileNodeType(): IFileElementType = FILE
-  override fun getCommentTokens(): TokenSet = KindTokenSets.COMMENTS
+  override fun getCommentTokens(): TokenSet = TokenSet.EMPTY
   override fun getStringLiteralElements(): TokenSet = TokenSet.EMPTY
 
   override fun createLexer(project: Project?): Lexer {

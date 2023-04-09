@@ -11,10 +11,114 @@
   elementTypeHolderClass="dev.aripiprazole.kind.idea.KindTypes"
   elementTypeClass="dev.aripiprazole.kind.idea.KindElementType"
   tokenTypeClass="dev.aripiprazole.kind.idea.KindTokenType"
+  
+  psiImplUtilClass="dev.aripiprazole.kind.idea.psi.KindPsiImplUtil"
 }
 
-simpleFile ::= item_*
+simpleFile ::= declaration* EOF;
+eol ::= (SEMI | CRLF)*;
 
-private item_ ::= (property|COMMENT|CRLF)
+declaration ::= SEMI | CRLF | DOC_STRING | COMMENT | attribute eol | type_declaration eol | use_declaration eol | rule_declaration eol | val_declaration eol;
 
-property ::= (KEY? SEPARATOR VALUE?) | KEY
+attribute ::= HASHTAG attribute_name (attribute_argument | attribute_assign);
+
+attribute_name ::= any_name;
+
+attribute_argument ::= LEFT_BRACKET any_name (COMMA any_name)* RIGHT_BRACKET;
+
+attribute_assign ::= EQUAL any_name;
+
+type_declaration ::= (TYPE | RECORD) type_name parameter* LEFT_BRACE (declaration | type_val_declaration)* RIGHT_BRACE;
+
+use_declaration ::= USE any_name AS any_name;
+
+val_declaration ::= any_name parameter* return_type;
+
+type_val_declaration ::= rule_name parameter* return_type?;
+
+any_name ::= val_name | local_name;
+
+rule_name ::= any_name;
+
+val_name ::= qualified (DOT ATOM)*;
+
+local_name ::= identifier (DOT ATOM)*;
+
+type_name ::= val_name | local_name;
+
+parameter_name ::= val_name | local_name;
+
+return_type ::= COLON type_expr;
+
+parameter ::= explicit_parameter | implicit_parameter | TILDE;
+
+explicit_parameter ::= LEFT_PAREN parameter_name (COLON type_expr)? RIGHT_PAREN;
+
+implicit_parameter ::= LT parameter_name (COLON type_expr)? GT;
+
+deconstruct_pattern ::= LEFT_PAREN parameter_name rule_pattern* RIGHT_PAREN;
+
+at_pattern ::= LEFT_PAREN parameter_name AT rule_pattern RIGHT_PAREN;
+
+rule_pattern ::= STRING_LITERAL 
+               | NAT_LITERAL
+               | F60_LITERAL
+               | U60_LITERAL
+               | U120_LITERAL
+               | CHAR_LITERAL
+               | at_pattern
+               | deconstruct_pattern
+               | identifier
+               | qualified
+               ;
+
+rule_declaration ::= any_name rule_pattern* (rule_value | rule_block_value);
+
+rule_block_value ::= LEFT_BRACE (statement SEMI)* RIGHT_BRACE;
+
+rule_value ::= EQUAL expr;
+
+statement ::= let_stmt | ask_stmt | return_stmt | expr;
+
+let_stmt ::= LET any_name EQUAL expr;
+
+ask_stmt ::= ASK any_name EQUAL? expr;
+
+return_stmt ::= RETURN expr;
+
+type_expr ::= expr;
+
+expr ::= do_expr | lam_type;
+
+lam_type ::= call (ARROW expr)?;
+
+do_expr ::= DO type_name? LEFT_BRACE (statement eol)* RIGHT_BRACE;
+
+identifier ::= ATOM {
+  methods="getIdentifier"
+};
+
+qualified ::= CONSTRUCTOR {
+  methods="getIdentifier"
+};
+
+call ::= unary (get_arguments | call_arguments)*;
+
+call_arguments ::= LEFT_PAREN identifier EQUAL expr RIGHT_PAREN | primary;
+get_arguments ::= DOT identifier;
+
+unary ::= primary
+        | HELP_TOKEN
+        | LEFT_PAREN UNARY_OP RIGHT_PAREN primary
+        ;
+
+primary ::= STRING_LITERAL 
+          | NAT_LITERAL
+          | F60_LITERAL
+          | U60_LITERAL
+          | U120_LITERAL
+          | CHAR_LITERAL
+          | LEFT_PAREN expr RIGHT_PAREN
+          | identifier
+          | qualified
+          ;

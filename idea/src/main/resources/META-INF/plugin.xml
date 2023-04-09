@@ -38,5 +38,8 @@
     <lang.syntaxHighlighterFactory
       language="Kind"
       implementationClass="dev.aripiprazole.kind.idea.KindHighlighterFactory"/>
+    <annotator
+      language="Kind"
+      implementationClass="dev.aripiprazole.kind.idea.KindSyntaxAnnotator"/>
   </extensions>
 </idea-plugin>

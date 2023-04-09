@@ -1,47 +1,87 @@
 package dev.aripiprazole.kind.idea;
 
-import com.intellij.psi.TokenType;
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
+import dev.aripiprazole.kind.idea.KindTypes;
 
 import static com.intellij.psi.TokenType.BAD_CHARACTER;
 import static com.intellij.psi.TokenType.WHITE_SPACE;
-import static dev.aripiprazole.kind.idea.KindTypes.*;
 
 %%
 
+%{
+  public _KindLexer() {
+    this((java.io.Reader)null);
+  }
+%}
+
+%public
 %class _KindLexer
 %implements FlexLexer
-%unicode
 %function advance
 %type IElementType
-%eof{  return;
-%eof}
+%unicode
 
+EOL=\R
+WHITE_SPACE=\s+
+U60_LITERAL=[0-9]+(u60)?
+U120_LITERAL=[0-9]+(u120)?
+NAT_LITERAL=[0-9]+(n)?
+F60_LITERAL=[0-9]+("." [0-9]+)?(f60)?
+STRING_LITERAL = \" ([^\"\\\n\r]|\\[^\n\r])* \"
+CHAR_LITERAL='[^'\\]'
+LEFT_PAREN=\(
+RIGHT_PAREN=\)
+EQUAL=\=
+CONSTRUCTOR=[a-zA-Z_][a-zA-Z0-9_/]*
+ATOM=[a-z_][a-zA-Z0-9_/]*
 CRLF=\R
-WHITE_SPACE=[\ \n\t\f]
-FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
-VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
-END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
-SEPARATOR=[:=]
-KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
+DOT=\.
+HELP_TOKEN=\?[a-zA-Z_.][a-zA-Z0-9_/.]*
+UNARY_OP=[\+\-\*\/\%]
+DOC_STRING="//!"[^\r\n]*\n
+COMMENT="//"[^\r\n]*\n
 
 %state WAITING_VALUE
+%state EOF
 
 %%
 
-<YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return KindTypes.COMMENT; }
-
-<YYINITIAL> {KEY_CHARACTER}+                                { yybegin(YYINITIAL); return KindTypes.KEY; }
-
-<YYINITIAL> {SEPARATOR}                                     { yybegin(WAITING_VALUE); return KindTypes.SEPARATOR; }
-
-<WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-
-<WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
-
-<WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*   { yybegin(YYINITIAL); return KindTypes.VALUE; }
-
-({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-
-[^]                                                         { return TokenType.BAD_CHARACTER; }
+<YYINITIAL> {DOC_STRING}                                    { return KindTypes.DOC_STRING; }
+<YYINITIAL> {COMMENT}                                       { return KindTypes.COMMENT; }
+<YYINITIAL> "do"                                            { return KindTypes.DO; }
+<YYINITIAL> "as"                                            { return KindTypes.AS; }
+<YYINITIAL> "let"                                           { return KindTypes.LET; }
+<YYINITIAL> "ask"                                           { return KindTypes.ASK; }
+<YYINITIAL> "use"                                           { return KindTypes.USE; }
+<YYINITIAL> "type"                                          { return KindTypes.TYPE; }
+<YYINITIAL> "record"                                        { return KindTypes.RECORD; }
+<YYINITIAL> "->"                                            { return KindTypes.ARROW; }
+<YYINITIAL> "~"                                             { return KindTypes.TILDE; }
+<YYINITIAL> "."                                             { return KindTypes.DOT; }
+<YYINITIAL> "<"                                             { return KindTypes.LT; }
+<YYINITIAL> ">"                                             { return KindTypes.GT; }
+<YYINITIAL> ":"                                             { return KindTypes.COLON; }
+<YYINITIAL> "#"                                             { return KindTypes.HASHTAG; }
+<YYINITIAL> ","                                             { return KindTypes.COMMA; }
+<YYINITIAL> "["                                             { return KindTypes.LEFT_BRACKET; }
+<YYINITIAL> "]"                                             { return KindTypes.RIGHT_BRACKET; }
+<YYINITIAL> "{"                                             { return KindTypes.LEFT_BRACE; }
+<YYINITIAL> "}"                                             { return KindTypes.RIGHT_BRACE; }
+<YYINITIAL> "("                                             { return KindTypes.LEFT_PAREN; }
+<YYINITIAL> ")"                                             { return KindTypes.RIGHT_PAREN; }
+<YYINITIAL> "="                                             { return KindTypes.EQUAL; }
+<YYINITIAL> "@"                                             { return KindTypes.AT; }
+<YYINITIAL> ";"                                             { return KindTypes.SEMI; }
+<YYINITIAL> {ATOM}                                          { return KindTypes.ATOM; }
+<YYINITIAL> {CONSTRUCTOR}                                   { return KindTypes.CONSTRUCTOR; }
+<YYINITIAL> {CHAR_LITERAL}                                  { return KindTypes.CHAR_LITERAL; }
+<YYINITIAL> {F60_LITERAL}                                   { return KindTypes.F60_LITERAL; }
+<YYINITIAL> {U60_LITERAL}                                   { return KindTypes.U60_LITERAL; }
+<YYINITIAL> {U120_LITERAL}                                  { return KindTypes.U120_LITERAL; }
+<YYINITIAL> {NAT_LITERAL}                                   { return KindTypes.NAT_LITERAL; }
+<YYINITIAL> {STRING_LITERAL}                                { return KindTypes.STRING_LITERAL; }
+<YYINITIAL> {CRLF}                                          { return KindTypes.CRLF; }
+<YYINITIAL> <<EOF>>                                         { yybegin(EOF); return KindTypes.EOF; }
+({WHITE_SPACE})+                                            { return WHITE_SPACE; }
+[^]                                                         { return BAD_CHARACTER; }
