@@ -8,16 +8,23 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiLiteralValue
 import dev.aripiprazole.kind.idea.psi.KindAsKeyword
 import dev.aripiprazole.kind.idea.psi.KindAskKeyword
+import dev.aripiprazole.kind.idea.psi.KindConstructorKeyword
 import dev.aripiprazole.kind.idea.psi.KindDoKeyword
+import dev.aripiprazole.kind.idea.psi.KindElseKeyword
 import dev.aripiprazole.kind.idea.psi.KindIdentifier
+import dev.aripiprazole.kind.idea.psi.KindIfKeyword
+import dev.aripiprazole.kind.idea.psi.KindIntoKeyword
 import dev.aripiprazole.kind.idea.psi.KindLetKeyword
 import dev.aripiprazole.kind.idea.psi.KindLocalName
+import dev.aripiprazole.kind.idea.psi.KindMatchKeyword
 import dev.aripiprazole.kind.idea.psi.KindParameterName
 import dev.aripiprazole.kind.idea.psi.KindPredefinedName
 import dev.aripiprazole.kind.idea.psi.KindQualified
 import dev.aripiprazole.kind.idea.psi.KindRecordKeyword
 import dev.aripiprazole.kind.idea.psi.KindReturnKeyword
+import dev.aripiprazole.kind.idea.psi.KindSpecializeKeyword
 import dev.aripiprazole.kind.idea.psi.KindTypeKeyword
+import dev.aripiprazole.kind.idea.psi.KindUseKeyword
 import dev.aripiprazole.kind.idea.psi.KindValName
 
 class KindSyntaxAnnotator : Annotator {
@@ -32,6 +39,13 @@ class KindSyntaxAnnotator : Annotator {
       is KindLetKeyword,
       is KindReturnKeyword,
       is KindDoKeyword,
+      is KindUseKeyword,
+      is KindMatchKeyword,
+      is KindSpecializeKeyword,
+      is KindIntoKeyword,
+      is KindIfKeyword,
+      is KindElseKeyword,
+      is KindConstructorKeyword,
       -> {
         holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
           .range(element.textRange)

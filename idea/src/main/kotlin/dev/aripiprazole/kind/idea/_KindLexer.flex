@@ -51,6 +51,7 @@ COMMENT="//"[^\r\n]*\n
 <YYINITIAL> {COMMENT}                                       { return KindTypes.COMMENT; }
 <YYINITIAL> "->"                                            { return KindTypes.ARROW; }
 <YYINITIAL> "=>"                                            { return KindTypes.FAT_ARROW; }
+<YYINITIAL> "::"                                            { return KindTypes.COLON_COLON; }
 <YYINITIAL> "~"                                             { return KindTypes.TILDE; }
 <YYINITIAL> "."                                             { return KindTypes.DOT; }
 <YYINITIAL> "<"                                             { return KindTypes.LT; }

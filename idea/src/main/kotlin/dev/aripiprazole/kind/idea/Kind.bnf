@@ -32,7 +32,7 @@ type_declaration ::= (type_keyword | record_keyword) type_name parameter* LEFT_B
 
 use_declaration ::= use_keyword any_name as_keyword any_name;
 
-val_declaration ::= any_name parameter* return_type rule_block_value?;
+val_declaration ::= any_name parameter* return_type? rule_block_value?;
 
 type_val_declaration ::= rule_name parameter* return_type?;
 
@@ -76,17 +76,27 @@ rule_pattern ::= STRING_LITERAL
 
 rule_declaration ::= any_name rule_pattern* (rule_value | rule_block_value);
 
-rule_block_value ::= LEFT_BRACE (statement eol)* RIGHT_BRACE;
+rule_block_value ::= LEFT_BRACE statement* RIGHT_BRACE;
 
-rule_value ::= EQUAL expr;
+rule_value ::= EQUAL statement;
 
-statement ::= let_stmt | ask_stmt | return_stmt | expr;
+statement ::= comments* statement_;
 
-let_stmt ::= let_keyword any_name EQUAL expr;
+private statement_ ::= let_stmt | open_stmt | ask_stmt | return_stmt | expr eol;
 
-ask_stmt ::= ask_keyword any_name EQUAL? expr;
+comments ::= DOC_STRING | COMMENT;
 
-return_stmt ::= return_keyword expr;
+let_stmt ::= let_keyword any_name EQUAL expr let_in?;
+
+let_in ::= eol statement;
+
+open_stmt ::= open_keyword any_name any_name open_in?;
+
+open_in ::= eol statement;
+
+ask_stmt ::= ask_keyword any_name EQUAL? expr eol;
+
+return_stmt ::= return_keyword expr eol;
 
 type_expr ::= expr;
 
@@ -94,9 +104,9 @@ expr ::= DOC_STRING | COMMENT | do_expr | lam_typed_expr | lam_expr;
 
 lam_typed_expr ::= (LEFT_PAREN any_name COLON type_expr RIGHT_PAREN) ((ARROW | FAT_ARROW) expr)?;
 
-lam_expr ::= call ((ARROW | FAT_ARROW) expr)?;
+lam_expr ::= call (binary expr)?;
 
-do_expr ::= do_keyword type_name? LEFT_BRACE (statement eol)* RIGHT_BRACE;
+do_expr ::= do_keyword type_name? LEFT_BRACE statement* RIGHT_BRACE;
 
 identifier ::= ATOM {
   methods="getIdentifier"
@@ -142,3 +152,13 @@ do_keyword ::= 'do';
 ask_keyword ::= 'ask';
 as_keyword ::= 'as';
 return_keyword ::= 'return';
+open_keyword ::= 'open';
+match_keyword ::= 'match';
+constructor_keyword ::= 'constructor';
+if_keyword ::= 'if';
+else_keyword ::= 'else';
+with_keyword ::= 'with';
+specialize_keyword ::= 'specialize';
+into_keyword ::= 'into';
+
+binary ::= ARROW | FAT_ARROW | COLON_COLON;
