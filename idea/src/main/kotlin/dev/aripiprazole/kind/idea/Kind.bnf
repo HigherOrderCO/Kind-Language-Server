@@ -28,7 +28,9 @@ attribute_argument ::= LEFT_BRACKET any_name (COMMA any_name)* RIGHT_BRACKET;
 
 attribute_assign ::= EQUAL any_name;
 
-type_declaration ::= (type_keyword | record_keyword) type_name parameter* LEFT_BRACE (declaration | type_val_declaration eol)* RIGHT_BRACE;
+type_declaration ::= (type_keyword | record_keyword) type_declaration_name parameter* LEFT_BRACE (declaration | type_val_declaration eol)* RIGHT_BRACE;
+
+type_declaration_name ::= type_name;
 
 use_declaration ::= use_keyword any_name as_keyword any_name;
 
@@ -114,7 +116,9 @@ then_expr ::= block;
 
 else_expr ::= else_keyword block;
 
-do_expr ::= do_keyword type_name? block;
+do_type ::= type_name;
+
+do_expr ::= do_keyword do_type? block;
 
 match_pattern ::= any_name | deconstruct_pattern;
 

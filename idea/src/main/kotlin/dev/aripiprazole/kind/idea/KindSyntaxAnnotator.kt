@@ -103,7 +103,9 @@ class KindSyntaxAnnotator : Annotator {
             .create()
         }
 
-        element.isInsideRuleValue() -> {
+        element.isInsideRuleValue() &&
+          !element.isInsideDoType() &&
+          !element.isInsideTypeDeclarationName() -> {
           holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
             .range(element.textRange)
             .highlightType(ProblemHighlightType.INFORMATION)
@@ -112,7 +114,16 @@ class KindSyntaxAnnotator : Annotator {
             .create()
         }
 
-        element.isInsideTyping() -> {
+        element.isInsideDoType() -> {
+          holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
+            .range(element.textRange)
+            .highlightType(ProblemHighlightType.INFORMATION)
+            .textAttributes(KindHighlighter.TYPE_NAME_KEYS)
+            .tooltip("type-name ${element.text}: Type")
+            .create()
+        }
+
+        element.isInsideTyping() && !element.isInsideTypeDeclarationName() -> {
           holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
             .range(element.textRange)
             .highlightType(ProblemHighlightType.INFORMATION)
