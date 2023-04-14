@@ -8,6 +8,7 @@ export const types: Record<string, KindTokenType> = {
   'parameter': {type: 'parameter'},
   'number': {type: 'number'},
   'comment': {type: 'comment'},
+  'documentation': {type: 'comment', modifiers: ['documentation']},
   'constant': {type: 'variable', modifiers: ['readonly', 'defaultLibrary']},
   'directive': {type: 'macro'},
   'operator': {type: 'operator'},
@@ -21,6 +22,7 @@ export const types: Record<string, KindTokenType> = {
   'enum-member': {type: 'enumMember'},
   'type-parameter': {type: 'typeParameter'},
   'property': {type: 'property'},
+  'builtin-class': {type: 'type'},
 };
 
 export const modifiers = [

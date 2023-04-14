@@ -8,11 +8,15 @@ const provider: vscode.DocumentSemanticTokensProvider = {
     if (document.languageId !== 'kind') return;
 
     const tree = kind.parser.parse(document.getText());
-    const terms = kind.highlight(tree).map((term) => ({
-      type: types[term.term]?.type,
-      modifiers: types[term.term]?.modifiers,
-      ...term,
-    }));
+    const terms = kind.highlight(tree).map((term) => {
+      const key = term.term(document.getText(term.range));
+      const token = types[key];
+      return {
+        type: token?.type,
+        modifiers: token?.modifiers,
+        ...term,
+      };
+    });
 
     const builder = new vscode.SemanticTokensBuilder(legend);
 

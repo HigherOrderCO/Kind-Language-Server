@@ -1,5 +1,6 @@
 import * as path from 'path';
 import Grammar from './grammar';
+import match from './match';
 
 const kind = new Grammar('Kind', {
   path: path.join(__dirname, '..', 'tree-sitter-kind'),
@@ -11,7 +12,6 @@ const kind = new Grammar('Kind', {
     'string': 'string',
     'char': 'string',
     // operators
-    '"="': 'operator',
     '"+="': 'operator',
     '"-="': 'operator',
     '"*="': 'operator',
@@ -38,7 +38,6 @@ const kind = new Grammar('Kind', {
     '"=>"': 'operator',
     '">"': 'operator',
     '"<"': 'operator',
-    '":"': 'operator',
     '"?"': 'operator',
     '"&&"': 'operator',
     '"||"': 'operator',
@@ -57,7 +56,7 @@ const kind = new Grammar('Kind', {
     '"$"': 'operator',
     // comments
     'line_comment': 'comment',
-    'doc_string': 'comment',
+    'doc_string': 'documentation',
     'hash_bang_line': 'comment',
     // keywords
     '"record"': 'keyword',
@@ -113,6 +112,9 @@ const kind = new Grammar('Kind', {
     'lam_parameter > identifier': 'parameter',
     'lam_parameter > constructor_identifier': 'parameter',
 
+    'lam_named_type_parameter > identifier': 'parameter',
+    'lam_named_type_parameter > constructor_identifier': 'parameter',
+
     'explicit_parameter > identifier': 'parameter',
     'explicit_parameter > constructor_identifier': 'parameter',
 
@@ -122,12 +124,36 @@ const kind = new Grammar('Kind', {
     'constructor_match_pattern > constructor_identifier > dot_access > lower_id':
       'enum-member',
 
-    'constructor_match_pattern > identifier > lower_id': 'enum-member',
+    'constructor_match_pattern > identifier > lower_id': 'variable',
 
     'rename_pattern > identifier': 'property',
 
+    'constructor_pattern > constructor_identifier > dot_access > lower_id':
+      'enum-member',
+
+    'pattern > identifier': 'parameter',
+    'pattern > constructor_identifier': 'parameter',
+
     'identifier': 'variable',
-    'upper_id': 'function',
+    'upper_id': ($) =>
+      match($, {
+        Pair: 'builtin-class',
+        Type: 'builtin-class',
+        Sigma: 'builtin-class',
+        F60: 'builtin-class',
+        U60: 'builtin-class',
+        U120: 'builtin-class',
+        Nat: 'builtin-class',
+        String: 'builtin-class',
+        Unit: 'builtin-class',
+        Absurd: 'builtin-class',
+        IO: 'builtin-class',
+        Maybe: 'builtin-class',
+        Monad: 'builtin-class',
+        Map: 'builtin-class',
+        Show: 'builtin-class',
+        _: 'function',
+      }),
   },
 });
 
