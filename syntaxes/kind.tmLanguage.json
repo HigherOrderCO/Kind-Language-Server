@@ -12,9 +12,6 @@
       "include": "#symbols"
     },
     {
-      "include": "#identifiers"
-    },
-    {
       "include": "#chars"
     },
     {
@@ -28,18 +25,6 @@
     }
   ],
   "repository": {
-    "identifiers": {
-      "patterns": [
-        {
-          "match": "[A-Z_^./][a-z_^./0-9]*",
-          "name": "entity.name.function"
-        },
-        {
-          "match": "[a-z_^./][a-z_^./0-9]*",
-          "name": "variable.name"
-        }
-      ]
-    },
     "symbols": {
       "patterns": [
         {

@@ -1,0 +1,3 @@
+[submodule "tree-sitter-kind"]
+	path = tree-sitter-kind
+	url = git@github.com:HigherOrderCO/tree-sitter-kind
