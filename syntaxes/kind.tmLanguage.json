@@ -15,6 +15,9 @@
       "include": "#identifiers"
     },
     {
+      "include": "#chars"
+    },
+    {
       "include": "#strings"
     },
     {
@@ -69,13 +72,24 @@
         }
       ]
     },
+    "chars": {
+      "name": "string.quoted.single",
+      "begin": "'",
+      "end": "'",
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "\\\\."
+        }
+      ]
+    },
     "strings": {
       "name": "string.quoted.double",
       "begin": "\"",
       "end": "\"",
       "patterns": [
         {
-          "name": "constant.character.escape.kind2",
+          "name": "constant.character.escape",
           "match": "\\\\."
         }
       ]
