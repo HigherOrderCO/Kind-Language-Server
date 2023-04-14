@@ -1,0 +1,101 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Kind",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#doc-strings"
+    },
+    {
+      "include": "#symbols"
+    },
+    {
+      "include": "#identifiers"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#attributes"
+    },
+    {
+      "include": "#decimals"
+    }
+  ],
+  "repository": {
+    "identifiers": {
+      "patterns": [
+        {
+          "match": "[A-Z_^./][a-z_^./0-9]*",
+          "name": "entity.name.function"
+        },
+        {
+          "match": "[a-z_^./][a-z_^./0-9]*",
+          "name": "variable.name"
+        }
+      ]
+    },
+    "symbols": {
+      "patterns": [
+        {
+          "name": "keyword.control",
+          "match": ">=|===|==|->|=>|=|\\!==|@|\\!=|\\+=|\\+\\+|\\+|-=|::|:|--|-|\\*=|\\*|/=|/|%=|%|!|\\&\\&|\\&|\\|\\||\\|.."
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash",
+          "match": "//.*$"
+        }
+      ]
+    },
+    "doc-strings": {
+      "patterns": [
+        {
+          "name": "comment.block.documentation",
+          "match": "//!.*$"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control",
+          "match": "\\b(if|then|else|return|do|ask|let|specialize|in|into|match|with|constructor)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.kind2",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "attributes": {
+      "patterns": [
+        {
+          "name": "variable.language",
+          "match": "(?<!\\w)#[\\w\\.]+\\b(?!:)"
+        }
+      ]
+    },
+    "decimals": {
+      "patterns": [
+        {
+          "match": "\\b\\d[\\d_]*(\\.[\\d_]+)?((e|E)\\d+)?(L|F|f)?\\b",
+          "name": "constant.numeric"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.kind"
+}

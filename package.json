@@ -1,8 +1,8 @@
 {
   "name": "eszopiclone",
   "displayName": "Eszopiclone",
-  "description": "Kind Language Server support",
-  "version": "0.3.0",
+  "description": "Kind programming language support",
+  "version": "0.3.1",
   "engines": {
     "vscode": "^1.77.0"
   },
@@ -17,14 +17,14 @@
   "contributes": {
     "languages": [
       {
-        "id": "kind2",
+        "id": "kind",
         "aliases": [
-          "Kind2",
+          "Kind",
           "kind2"
         ],
         "extensions": [
-          "kind2",
-          "kind"
+          "kind",
+          "kind2"
         ],
         "configuration": "./language-configuration.json",
         "icon": {
@@ -35,9 +35,9 @@
     ],
     "grammars": [
       {
-        "language": "kind2",
-        "scopeName": "Main.kind2",
-        "path": "./syntaxes/kind2.tmLanguage.json"
+        "language": "kind",
+        "scopeName": "source.kind",
+        "path": "./syntaxes/kind.tmLanguage.json"
       }
     ]
   }
