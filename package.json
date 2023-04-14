@@ -1,8 +1,8 @@
 {
   "name": "eszopiclone",
-  "displayName": "Eszopiclone",
+  "displayName": "Kind Programming Language",
   "description": "Kind programming language support",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "icon": "./icons/kind.png",
   "main": "./out/extension.js",
   "engines": {
