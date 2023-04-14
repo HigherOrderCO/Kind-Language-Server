@@ -1,0 +1,100 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Kind",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#doc-strings"
+    },
+    {
+      "include": "#symbols"
+    },
+    {
+      "include": "#chars"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#attributes"
+    },
+    {
+      "include": "#decimals"
+    }
+  ],
+  "repository": {
+    "symbols": {
+      "patterns": [
+        {
+          "name": "keyword.control",
+          "match": ">=|===|==|->|=>|=|\\!==|@|\\!=|\\+=|\\+\\+|\\+|-=|::|:|--|-|\\*=|\\*|/=|/|%=|%|!|\\&\\&|\\&|\\|\\||\\|.."
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash",
+          "match": "//.*$"
+        }
+      ]
+    },
+    "doc-strings": {
+      "patterns": [
+        {
+          "name": "comment.block.documentation",
+          "match": "//!.*$"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control",
+          "match": "\\b(if|then|else|return|do|ask|let|specialize|in|into|match|with|constructor)\\b"
+        }
+      ]
+    },
+    "chars": {
+      "name": "string.quoted.single",
+      "begin": "'",
+      "end": "'",
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "attributes": {
+      "patterns": [
+        {
+          "name": "variable.language",
+          "match": "(?<!\\w)#[\\w\\.]+\\b(?!:)"
+        }
+      ]
+    },
+    "decimals": {
+      "patterns": [
+        {
+          "match": "\\b\\d[\\d_]*(\\.[\\d_]+)?((e|E)\\d+)?(L|F|f)?\\b",
+          "name": "constant.numeric"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.kind"
+}
