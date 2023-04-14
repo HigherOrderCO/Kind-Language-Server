@@ -40,5 +40,14 @@
         "path": "./syntaxes/kind.tmLanguage.json"
       }
     ]
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "@types/vscode": "^1.77.0",
+    "tree-sitter": "^0.20.1",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "web-tree-sitter": "^0.20.8"
   }
 }
